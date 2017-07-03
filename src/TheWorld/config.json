@@ -1,0 +1,10 @@
+{
+	"MailSettings": {
+
+		"ToAddress": "a.chilikina@hotmail.com"
+	},
+	// Data - uses local SQL Server machine included with VS installation
+	"ConnectionStrings": {
+		"WorldContextConnection" :  "Server=(localdb)\\MSSQLLocalDB;Database=AnnaWorldDb;Trusted_Connection=true;MultipleActiveResultSets=true"
+	} 
+}
