@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace TheWorld.Models
 {
@@ -9,13 +10,18 @@ namespace TheWorld.Models
 	{
 		private WorldContext _context;
 
-		public WorldRepository(WorldContext context)
+		// Specify the type of the logger by passing WorldRepository. Log system imits it into the log messages.
+		private ILogger<WorldRepository> _logger;
+
+		public WorldRepository(WorldContext context, ILogger<WorldRepository> logger)
 	    {
 		    _context = context;
+		    _logger = logger;
 	    }
 
 	    public IEnumerable<Trip> GetAllTrips()
 	    {
+			_logger.LogInformation("Getting All Trips from DB");
 		    return _context.Trips.ToList();
 	    }
     }

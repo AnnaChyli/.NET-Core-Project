@@ -69,6 +69,8 @@ namespace TheWorld
 			// Add prepopulated data
 			services.AddTransient<WorldContextSeedData>();
 
+	        services.AddLogging();
+
 			//service container - to register all required services (class objects, interfaces,...). 
 			//it uses dependency injection 
 			services.AddMvc();
@@ -78,12 +80,21 @@ namespace TheWorld
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.   IHostingEnvironment env, ILoggerFactory loggerFactory
 		public void Configure(IApplicationBuilder app, 
 			IHostingEnvironment env, 
-			WorldContextSeedData seeder)
+			WorldContextSeedData seeder,
+			ILoggerFactory logFactory)
 		{
 			if (env.IsEnvironment("Development"))
 			{
 				//Allows to see 
 				app.UseDeveloperExceptionPage();
+
+
+				//Microsoft.Extensions.Logging
+				logFactory.AddDebug(LogLevel.Information);
+			}
+			else
+			{
+				logFactory.AddDebug(LogLevel.Error);
 			}
 
 			//Add MiddleWare -> to serve files to the browser

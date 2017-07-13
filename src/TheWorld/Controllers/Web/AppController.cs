@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using TheWorld.Models;
 using TheWorld.Services;
 using TheWorld.ViewModels;
@@ -20,23 +21,34 @@ namespace TheWorld.Controllers.Web
 		//To have a data access layer/Repository pattern
 		private IWorldRepository _repository;
 
-		// Implementing a dependency injection for the Contact() method to
+	    private ILogger<AppController> _logger;
+
+	    // Implementing a dependency injection for the Contact() method to
 		// be able to get the email message
-		public AppController(IMailService mailService, IConfigurationRoot config, IWorldRepository repository)
+		public AppController(IMailService mailService, IConfigurationRoot config, IWorldRepository repository, ILogger<AppController> logger)
 	    {
 		    _mailService = mailService;
 		    _config = config;
 		    _repository = repository;
+		    _logger = logger;
 	    }
 
 
         // GET: /<controller>/
         public IActionResult Index()
         {
-			// Converts this line into the query, and retrieves list of trips
-	        IEnumerable<Trip> data = _repository.GetAllTrips();
+	        try
+	        {
+		        // Converts this line into the query, and retrieves list of trips
+		        IEnumerable<Trip> data = _repository.GetAllTrips();
 
-            return View(data);
+		        return View(data);
+	        }
+	        catch (Exception ex)
+	        {
+		        _logger.LogError($"Failed to get Trips in Index page: {ex.Message}");
+		        return Redirect("/error");
+	        }
         }
 
 
