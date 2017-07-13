@@ -60,13 +60,19 @@ namespace TheWorld
 			//Register Entity Framework context to work with DB
 	        services.AddDbContext<WorldContext>();
 
+	        // Add prepopulated data
+	        services.AddTransient<WorldContextSeedData>();
+
 			//service container - to register all required services (class objects, interfaces,...). 
 			//it uses dependency injection 
 			services.AddMvc();
+			
         }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.   IHostingEnvironment env, ILoggerFactory loggerFactory
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, 
+			IHostingEnvironment env, 
+			WorldContextSeedData seeder)
 		{
 			if (env.IsEnvironment("Development"))
 			{
@@ -88,17 +94,22 @@ namespace TheWorld
 				}
 			);
 
-	        //loggerFactory.AddConsole();
+			// Configure() can not be async, so that's why async EnsureSeedData() has .Wait() 
+			seeder.EnsureSeedData().Wait();
 
-	        //if (env.IsDevelopment())
-	        //{
-	        //    app.UseDeveloperExceptionPage();
-	        //}
 
-	        //app.Run(async (context) =>
-	        //{
-	        //    await context.Response.WriteAsync("<html><body><h2>Hello World!</h2></body></html>");
-	        //});
-        }
+
+			//loggerFactory.AddConsole();
+
+			//if (env.IsDevelopment())
+			//{
+			//    app.UseDeveloperExceptionPage();
+			//}
+
+			//app.Run(async (context) =>
+			//{
+			//    await context.Response.WriteAsync("<html><body><h2>Hello World!</h2></body></html>");
+			//});
+		}
     }
 }

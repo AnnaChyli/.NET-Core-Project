@@ -5,6 +5,6 @@
 	},
 	// Data - uses local SQL Server machine included with VS installation
 	"ConnectionStrings": {
-		"WorldContextConnection" :  "Server=(localdb)\\MSSQLLocalDB;Database=AnnaWorldDb;Trusted_Connection=true;MultipleActiveResultSets=true"
+		"WorldContextConnection" :  "Server=(localdb)\\MSSQLLocalDB;Database=TheWorld;Trusted_Connection=true;MultipleActiveResultSets=true"
 	} 
 }
