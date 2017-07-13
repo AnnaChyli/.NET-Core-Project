@@ -1,4 +1,8 @@
-﻿@{
+﻿@using System.Collections.Generic
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@model IEnumerable<TheWorld.Models.Trip>
+
+@{
 	ViewBag.Title = "Home Page";
 }
 
@@ -24,6 +28,13 @@
 	
 	<div class="col-md-6">
 		<h2>The Map</h2>
+		<ul>
+			@foreach (var item in Model)
+			{
+				<li>@item.Name : @item.DateCreated.ToString("yy-MM-dd")</li>
+			}
+
+		</ul>
 	</div>
 	
 

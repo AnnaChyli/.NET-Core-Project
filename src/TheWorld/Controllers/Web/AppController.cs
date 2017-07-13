@@ -16,15 +16,17 @@ namespace TheWorld.Controllers.Web
     {
 	    private IMailService _mailService;
 	    private IConfigurationRoot _config;
-		private WorldContext _context;
+
+		//To have a data access layer/Repository pattern
+		private IWorldRepository _repository;
 
 		// Implementing a dependency injection for the Contact() method to
 		// be able to get the email message
-		public AppController(IMailService mailService, IConfigurationRoot config, WorldContext context)
+		public AppController(IMailService mailService, IConfigurationRoot config, IWorldRepository repository)
 	    {
 		    _mailService = mailService;
 		    _config = config;
-		    _context = context;
+		    _repository = repository;
 	    }
 
 
@@ -32,7 +34,7 @@ namespace TheWorld.Controllers.Web
         public IActionResult Index()
         {
 			// Converts this line into the query, and retrieves list of trips
-	        List<Trip> data = _context.Trips.ToList();
+	        IEnumerable<Trip> data = _repository.GetAllTrips();
 
             return View(data);
         }

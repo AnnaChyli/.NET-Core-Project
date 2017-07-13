@@ -60,8 +60,14 @@ namespace TheWorld
 			//Register Entity Framework context to work with DB
 	        services.AddDbContext<WorldContext>();
 
-	        // Add prepopulated data
-	        services.AddTransient<WorldContextSeedData>();
+			//Add dependency injection logic for IWorldRepository.. Will be created once per request cycle, coz it is expensive
+	        services.AddScoped<IWorldRepository, WorldRepository>();
+
+				//TRICK! - for test purposes
+				//services.AddScoped<IWorldRepository, MockWorldRepository>();
+
+			// Add prepopulated data
+			services.AddTransient<WorldContextSeedData>();
 
 			//service container - to register all required services (class objects, interfaces,...). 
 			//it uses dependency injection 
@@ -94,7 +100,7 @@ namespace TheWorld
 				}
 			);
 
-			// Configure() can not be async, so that's why async EnsureSeedData() has .Wait() 
+			// TRICK! - Configure() can not be async, so that's why async EnsureSeedData() has .Wait() 
 			seeder.EnsureSeedData().Wait();
 
 
