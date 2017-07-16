@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TheWorld.Models;
 using TheWorld.ViewModels;
@@ -24,11 +25,20 @@ namespace TheWorld.Controllers.Api
 		[HttpGet("")]
 	    public IActionResult Get()
 		{
-			
-
 			//if (true) return BadRequest("Error occured!");
+			try
+			{
+				var tripResults = _repository.GetAllTrips();
 
-		    return Ok(_repository.GetAllTrips());
+				throw new Exception();//return Ok(Mapper.Map<IEnumerable<TripViewModel>>(tripResults));
+			}
+			catch(Exception e)
+			{
+				//TODO Logging the exception
+
+
+				return BadRequest("Error occured while retrieving trips " + e.Message);
+			}
 	    }
 
 		//[FromBody] is to model bind a coming in with JSON data (body of it) to Trip obj.
@@ -38,7 +48,15 @@ namespace TheWorld.Controllers.Api
 			// In order to check for ModelState, we need to have validation attributes in VM class
 		    if (ModelState.IsValid)
 		    {
-			    return Created($"api/trips/{trip.Name}", trip);
+				//Map from source object VMTrip to the existing entity Trip.
+				//TRICK: first the MAP should be created saying from what to what => see Startup/Configure()
+			    Trip newTrip = Mapper.Map<Trip>(trip);
+
+
+
+
+				//Should return a TripVM not to expose entity class Trip
+			    return Created($"api/trips/{trip.Name}", Mapper.Map<TripViewModel>(newTrip));
 		    }
 
 			return BadRequest(ModelState);
