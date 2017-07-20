@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using TheWorld.Models;
+using TheWorld.Models.Repositories;
 using TheWorld.Services;
 using TheWorld.ViewModels;
 

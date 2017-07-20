@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using TheWorld.Models;
+using TheWorld.Models.Repositories;
 using TheWorld.Services;
 using TheWorld.ViewModels;
 
@@ -94,7 +95,7 @@ namespace TheWorld
 				{
 					//Create TripVM -> Trip and reverse map Trip -> TripVM
 					config.CreateMap<TripViewModel, Trip>().ReverseMap();
-
+					config.CreateMap<StopViewModel, Stop>().ReverseMap();
 
 				}		
 			);
